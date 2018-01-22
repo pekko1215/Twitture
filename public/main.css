@@ -1,0 +1,49 @@
+.title{
+	text-align: center;
+	font-weight: 500;
+}
+
+body{
+	background-color: #F9F9F9;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.header{
+    background: #FFF;
+    border-bottom: 1px solid #EEE;
+    margin: 0;
+    padding: 0;
+    font-size:27px
+}
+
+.header-wrapper{
+	padding-top: 15px;
+    height: 50px;
+    background: #FFF;
+    margin-bottom: 1px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.auth-wrap{
+	display: inline-block;
+	border-radius: 3px;
+	background:#3599f0;
+	padding:5px;
+	color:white;
+	font-size:12pt;
+}
+.auth-icon{
+    width: 30px;
+    height: 30px;
+	background-image:url("./image/Twitter_Logo_WhiteOnImage.png");
+	background-size: cover;
+	display: inline-block;
+	position: relative;
+	top:4px;
+	padding:4px;
+	margin-right: 4px;
+}
