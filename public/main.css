@@ -1,0 +1,96 @@
+.title {
+    text-align: center;
+    font-weight: 500;
+}
+
+body {
+    background-color: #F9F9F9;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.header {
+    background: #FFF;
+    border-bottom: 1px solid #EEE;
+    margin: 0;
+    padding: 0;
+    font-size: 27px
+}
+
+.header-wrapper {
+    padding-top: 15px;
+    height: 50px;
+    background: #FFF;
+    margin-bottom: 1px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.auth-wrap {
+    display: inline-block;
+    border-radius: 3px;
+    background: #3599f0;
+    padding: 5px;
+    color: white;
+    font-size: 12pt;
+}
+
+.auth-icon {
+    width: 30px;
+    height: 30px;
+    background-image: url("./image/Twitter_Logo_WhiteOnImage.png");
+    background-size: cover;
+    display: inline-block;
+    position: relative;
+    top: 4px;
+    padding: 4px;
+    margin-right: 4px;
+}
+
+.card,body{
+	font-size:calc(20px + 0.25vw);
+}
+
+.navbar-brand{
+	font-size:calc(30px + 0.25vw);
+}
+
+.card{
+	background-color:#a3eef122;
+	margin:5px;
+	width:100%;
+	text-align:left;
+	font-size:calc(30px + 0.25vw);
+	cursor: pointer;
+}
+
+.card-header{
+	font-size:calc(20px + 0.25vw);
+	background-color:#fffacb;
+}
+
+.card-body{
+	font-size:calc(25px + 0.25vw);
+	line-height:calc(25px + 0.25vw);
+}
+
+.current-content{
+	position: relative;
+	width:35%;
+	background: #aaaaff;
+	display: inline-block;
+	border-radius: 3px;
+}
+
+.current-arrow{
+	width:30%;
+}
+
+.current{
+	margin-left:-10px;
+	margin-right:-10px;
+	font-size: 2vw;
+	line-height: 3vw;
+}
