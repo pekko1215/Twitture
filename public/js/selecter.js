@@ -30,7 +30,7 @@ $(() => {
     })
 
     $('#to_tweet_button').on('click',()=>{
-		var base64 = $('#image-disp')[0].src.replace(/^.*,/, '');
+		var base64 = ImageToBase64($('#image-disp')[0],'image/png').replace(/^.*,/, '');
 		var text = $('textarea').val()
 		$.ajax({
 			type:"POST",
@@ -83,4 +83,16 @@ function tweetDOMParser(tweet) {
 		</div>
 	</div>
 		`
+}
+
+function ImageToBase64(img, mime_type) {
+    // New Canvas
+    var canvas = document.createElement('canvas');
+    canvas.width  = img.width;
+    canvas.height = img.height;
+    // Draw Image
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    // To Base64
+    return canvas.toDataURL(mime_type);
 }
