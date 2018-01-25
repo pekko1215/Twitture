@@ -6,6 +6,8 @@ const webshot = require('webshot')
 const ejs = require('ejs');
 const ejsbase = fs.readFileSync('./render/liner/index.ejs', 'utf8')
 const ccss = fs.readFileSync('./render/liner/style.css', 'utf-8')
+
+
 configRoutes = function(app, server, passport) {
     app.get('/', function(req, res, next) {
         // 認証保護
@@ -51,18 +53,18 @@ configRoutes = function(app, server, passport) {
             access_token_key: passport.session.token,
             access_token_secret: passport.session.tokenSecret
         })
-        var prom = client.get('statuses/show/'+id,{})
+        var prom = client.get('statuses/show/' + id, {})
         var ret = [];
-        var callback = (data)=>{
+        var callback = (data) => {
             ret.push(data);
-            if(data.in_reply_to_status_id_str){
-                prom = client.get('statuses/show/'+data.in_reply_to_status_id_str,{});
+            if (data.in_reply_to_status_id_str) {
+                prom = client.get('statuses/show/' + data.in_reply_to_status_id_str, {});
                 prom.then(callback)
-            }else{
+            } else {
                 res.json(ret.reverse());
             }
         }
-        prom.then(callback).catch(()=>{
+        prom.then(callback).catch(() => {
             res.json([])
         });
     });
@@ -74,7 +76,7 @@ configRoutes = function(app, server, passport) {
                     id: tweet.user.screen_name,
                     name: tweet.user.name,
                     icon: tweet.user.profile_image_url,
-                    text: tweet.text.replace(/@.+? /g,''),
+                    text: tweet.text.replace(/@.+? /g, ''),
                     isOwner: tweet.user.id_str == passport.session.id,
                     images: tweet.extended_entities && tweet.extended_entities.media ? tweet.extended_entities.media.map(d => d.media_url) : []
                 }
@@ -100,24 +102,44 @@ configRoutes = function(app, server, passport) {
             })
         }
     })
-    app.get('/utils/list', function(req, res,next) {
+    app.get('/utils/list', function(req, res, next) {
         // 認証保護
         if (passport.session && passport.session.id) {
             var client = new Twitter({
-                consumer_key:TWITTER_KEYS.consumerKey,
-                consumer_secret:TWITTER_KEYS.consumerSecret,
-                access_token_key:passport.session.token,
-                access_token_secret:passport.session.tokenSecret
+                consumer_key: TWITTER_KEYS.consumerKey,
+                consumer_secret: TWITTER_KEYS.consumerSecret,
+                access_token_key: passport.session.token,
+                access_token_secret: passport.session.tokenSecret
             })
-            client.get('search/tweets',{q:`from:${passport.session.username} AND min_replies:1 OR to:${passport.session.username}`})
-            .then(data=>{
-                var {statuses} = data;
-                res.json(statuses);
-            })
+            client.get('search/tweets', { q: `from:${passport.session.username} AND min_replies:1 OR to:${passport.session.username}` })
+                .then(data => {
+                    var { statuses } = data;
+                    res.json(statuses);
+                })
         } else {
             next();
         }
     });
+
+    app.post('/utils/tweet', function(req, res) {
+        if (passport.session && passport.session.id) {
+            var client = new Twitter({
+                consumer_key: TWITTER_KEYS.consumerKey,
+                consumer_secret: TWITTER_KEYS.consumerSecret,
+                access_token_key: passport.session.token,
+                access_token_secret: passport.session.tokenSecret
+            })
+            client.get('media/upload', {media_data:req.img})
+                .then(data => {
+                    res.json(statuses);
+                })
+                .catch(err=>{
+
+                })
+        } else {
+            next();
+        }
+    })
 
     // passport-twitter ----->
     // http://passportjs.org/guide/twitter/

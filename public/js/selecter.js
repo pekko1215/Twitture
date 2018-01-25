@@ -28,6 +28,22 @@ $(() => {
     $('#url').on('keydown',(e)=>{
 		e.key ==  'Enter' && $('#request_url').click();
     })
+
+    $('#to_tweet_button').on('click',()=>{
+		var base64 = $('#image-disp')[0].src.replace(/^.*,/, '');
+		var text = $('textarea').val()
+		$.ajax({
+			type:"POST",
+			url:'utils/tweet',
+			data:{
+				text:text,
+				img:base64
+			},
+			success:function(res){
+				console.log(res)
+			}
+		})
+    })
 })
 
 function escapeHTML(str) {
