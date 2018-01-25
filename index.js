@@ -5,6 +5,8 @@ const routes = require('./routes');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const formidable = require('express-formidable');
+
 const app = express();
 
 const server = http.createServer(app);
@@ -14,7 +16,7 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({limit:'100mb',extended: true }));
 app.use(bodyParser.json());
-
+app.use(formidable());
 app.use(passport.initialize());
 app.use(passport.session())
 app.use(session({secret:require('./config').session.secret}));
