@@ -3,6 +3,7 @@ $(() => {
     var $old = $('.current-content').eq(0)
     var $new = $('.current-content').eq(1)
     var $url = $('#url');
+    var buf;
     $('#request_url').click((e)=>{
 		$('#tweets').children().remove();
 		var num = $url.val().match(/\d+$/)[0];
@@ -15,6 +16,7 @@ $(() => {
 					$('#content_button').show()
 					$('#image-disp')[0].src = URL.createObjectURL(this.response)
 					$('#request_load').remove();
+					buf = this.response;
 				}
 			}
 			xhr.open('POST','/utils/create');
@@ -32,13 +34,13 @@ $(() => {
     $('#to_tweet_button').on('click',()=>{
 		var base64 = ImageToBase64($('#image-disp')[0],'image/png').replace(/^.*,/, '');
 		var text = $('textarea').val()
+		var form = new FormData();
+		form.append('text',text);
+		form.append('img',buf);
 		$.ajax({
 			type:"POST",
 			url:'utils/tweet',
-			data:{
-				text:text,
-				img:base64
-			},
+			data:form,
 			success:function(res){
 				console.log(res)
 			}
