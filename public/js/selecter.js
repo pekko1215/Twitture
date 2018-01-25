@@ -36,7 +36,6 @@ $(() => {
 		var form = new FormData();
 		form.append('text',text);
 		form.append('img',buf);
-		console.log(form)
 		$.ajax({
 			type:"POST",
 			url:'utils/tweet',
