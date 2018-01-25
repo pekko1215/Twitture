@@ -1,47 +1,25 @@
-<<<<<<< HEAD
 .title {
     text-align: center;
     font-weight: 500;
 }
-
-body {
-    background-color: #F9F9F9;
-=======
-.title{
-	text-align: center;
-	font-weight: 500;
-}
-
 body{
 	background-color: #F9F9F9;
->>>>>>> origin/master
     margin: 0;
     padding: 0;
     text-align: center;
 }
 
-<<<<<<< HEAD
-.header {
-=======
 .header{
->>>>>>> origin/master
     background: #FFF;
     border-bottom: 1px solid #EEE;
     margin: 0;
     padding: 0;
-<<<<<<< HEAD
     font-size: 27px
 }
 
-.header-wrapper {
-    padding-top: 15px;
-=======
-    font-size:27px
-}
 
 .header-wrapper{
 	padding-top: 15px;
->>>>>>> origin/master
     height: 50px;
     background: #FFF;
     margin-bottom: 1px;
@@ -50,7 +28,6 @@ body{
     margin: 0 auto;
 }
 
-<<<<<<< HEAD
 .auth-wrap {
     display: inline-block;
     border-radius: 3px;
