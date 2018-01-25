@@ -122,7 +122,7 @@ configRoutes = function(app, server, passport) {
     });
 
     app.post('/utils/tweet', function(req, res) {
-        console.log(conosle.log(req));
+        console.log((req));
         res.send('nyan');
         return;
         if (passport.session && passport.session.id) {
