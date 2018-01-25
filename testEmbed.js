@@ -1,5 +1,6 @@
 const ejs = require('ejs');
 const fs = require('fs');
+const webshot = require('webshot')
 
 var tweets = [{
 	name:"ヒデホヒ",
@@ -16,6 +17,11 @@ var tweets = [{
 	images:[]
 }]
 
-console.log(tweets)
+webshot('./render/liner/out.html','google.png',{
+	siteType:'file',
+	customCSS:require('fs').readFileSync('./render/liner/style.css','utf-8')
+},(err)=>{
+	console.log(err)
+})
 
 fs.writeFileSync('./render/liner/out.html',ejs.render(fs.readFileSync('./render/liner/index.ejs','utf8'),{tweets:tweets}),'utf8');

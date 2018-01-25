@@ -22,11 +22,4 @@ app.use(session({secret:require('./config').session.secret}));
 routes.configRoutes(app,server,passport);
 app.use(express.static(__dirname + '/public'));
 
-// webshot('./render/liner/out.html','google.png',{
-//	siteType:'file',
-//	customCSS:require('fs').readFileSync('./render/liner/style.css','utf-8')
-// },(err)=>{
-//	console.log(err)
-// })
-
 server.listen(3000);

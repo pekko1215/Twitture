@@ -4,7 +4,8 @@ const Twitter = require('twitter');
 const TWITTER_KEYS = require('./config').twitter;
 const webshot = require('webshot')
 const ejs = require('ejs');
-
+const ejsbase = fs.readFileSync('./render/liner/index.ejs', 'utf8')
+const ccss = fs.readFileSync('./render/liner/style.css', 'utf-8')
 configRoutes = function(app, server, passport) {
     app.get('/', function(req, res, next) {
         // 認証保護
@@ -38,26 +39,32 @@ configRoutes = function(app, server, passport) {
 
     app.get('/utils/replies', function(req, res, next) {
         // 認証保護
-        var tousername = req.query.username;
+
         var id = req.query.id;
-        if (passport.session && passport.session.id) {
-            var client = new Twitter({
-                consumer_key: TWITTER_KEYS.consumerKey,
-                consumer_secret: TWITTER_KEYS.consumerSecret,
-                access_token_key: passport.session.token,
-                access_token_secret: passport.session.tokenSecret
-            })
-            client.get('search/tweets', { q: `to:${tousername}`, since_id: id })
-                .then(data => {
-                    var { statuses } = data;
-                    statuses = statuses.filter(data => {
-                        return data.in_reply_to_status_id == id
-                    })
-                    res.json(statuses);
-                })
-        } else {
-            res.redirect('/')
+
+        if (!passport.session || !passport.session.id) {
+            res.redirect('/');
         }
+        var client = new Twitter({
+            consumer_key: TWITTER_KEYS.consumerKey,
+            consumer_secret: TWITTER_KEYS.consumerSecret,
+            access_token_key: passport.session.token,
+            access_token_secret: passport.session.tokenSecret
+        })
+        var prom = client.get('statuses/show/'+id,{})
+        var ret = [];
+        var callback = (data)=>{
+            ret.push(data);
+            if(data.in_reply_to_status_id_str){
+                prom = client.get('statuses/show/'+data.in_reply_to_status_id_str,{});
+                prom.then(callback)
+            }else{
+                res.json(ret.reverse());
+            }
+        }
+        prom.then(callback).catch(()=>{
+            res.json([])
+        });
     });
 
     app.post('/utils/create', function(req, res, next) {
@@ -67,15 +74,15 @@ configRoutes = function(app, server, passport) {
                     id: tweet.user.screen_name,
                     name: tweet.user.name,
                     icon: tweet.user.profile_image_url,
-                    text: tweet.text,
+                    text: tweet.text.replace(/@.+? /g,''),
                     isOwner: tweet.user.id_str == passport.session.id,
                     images: tweet.extended_entities && tweet.extended_entities.media ? tweet.extended_entities.media.map(d => d.media_url) : []
                 }
             })
-            var html = ejs.render(fs.readFileSync('./render/liner/index.ejs', 'utf8'), { tweets: arr });
+            var html = ejs.render(ejsbase, { tweets: arr });
             var stream = webshot(html, null, {
                 siteType: 'html',
-                customCSS: require('fs').readFileSync('./render/liner/style.css', 'utf-8'),
+                customCSS: ccss,
                 shotSize: { width: 'all', height: 'all' },
                 shotOffset: {
                     left: 0,
@@ -83,7 +90,7 @@ configRoutes = function(app, server, passport) {
                     top: 0,
                     bottom: 0
                 },
-                captureSelector:'table'
+                captureSelector: 'table'
             })
             var shot = '';
             stream.on('data', data => shot += data.toString('binary'));

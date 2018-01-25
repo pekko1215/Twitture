@@ -2,30 +2,41 @@
 <html>
 <head>
 	<title>ツイっちゃー</title>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
-	<link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.0.0-beta.4/dist/css/bootstrap-material-design.min.css" integrity="sha384-R80DC0KVBO4GSTw+wZ5x2zn2pu4POSErBkf8/fSFhPXHxvHJydT0CSgAP2Yo2r4I" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 </head>
 <body>
 	<nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
 		<a href="#" class="navbar-brand mx-auto">ツイっちゃー</a>
 	</nav>
 	<div class="container">
-		<div class="current row">
-			<div class="current-content"></div>
-			<div class="current-arrow">
-				<img style="transform: rotate(90deg);width:50%;" src="image/right-arrow.png">
+		<div class="row paste-wrap">
+			<div class="col-md-12">
+				<div class="input-group">
+					<input class="form-control" id="url" placeholder="ツイートのURLを入力してください。">
+					<span class="input-group-btn">
+						<button class="btn btn-success" id="request_url">
+							<span class="glyphicon glyphicon-object-align-horizontal" aria-hidden="true">
+							</span>
+						</button>
+					</span>
+				</div>
 			</div>
-			<div class="current-content"></div>
+		</div>
+		<div id="content_button" class="row" style="display: none;">
+			<div class="col-md-12">
+				<textarea class="form-control"></textarea>
+				<button class="btn btn-warning" id="to_tweet_button">ツイート！</button>
+				<div id="image-displer">
+					<img id="image-disp">
+				</div>
+			</div>
 		</div>
 		<div id="tweets" class="row">
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/bootstrap-material-design@4.0.0-beta.4/dist/js/bootstrap-material-design.js" crossorigin="anonymous"></script>
 	<script src="js/selecter.js"></script>
-
 </body>
 </html>
