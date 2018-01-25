@@ -12,7 +12,7 @@ const server = http.createServer(app);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({limit:'100mb',extended: true }));
 app.use(bodyParser.json());
 
 app.use(passport.initialize());
