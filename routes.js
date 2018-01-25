@@ -122,7 +122,7 @@ configRoutes = function(app, server, passport) {
     });
 
     app.post('/utils/tweet', function(req, res) {
-        console.log(req.file.length)
+        console.log(req.body.img.length)
         if (passport.session && passport.session.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
@@ -130,7 +130,7 @@ configRoutes = function(app, server, passport) {
                 access_token_key: passport.session.token,
                 access_token_secret: passport.session.tokenSecret
             })
-            client.get('media/upload', {media_data:req.file.toString()})
+            client.get('media/upload', {media_data:req.body.img.toString()})
                 .then(data => {
                     res.json(statuses);
                 })
