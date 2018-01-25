@@ -100,6 +100,24 @@ configRoutes = function(app, server, passport) {
             })
         }
     })
+    app.get('/utils/list', function(req, res,next) {
+        // 認証保護
+        if (passport.session && passport.session.id) {
+            var client = new Twitter({
+                consumer_key:TWITTER_KEYS.consumerKey,
+                consumer_secret:TWITTER_KEYS.consumerSecret,
+                access_token_key:passport.session.token,
+                access_token_secret:passport.session.tokenSecret
+            })
+            client.get('search/tweets',{q:`from:${passport.session.username} AND min_replies:1 OR to:${passport.session.username}`})
+            .then(data=>{
+                var {statuses} = data;
+                res.json(statuses);
+            })
+        } else {
+            next();
+        }
+    });
 
     // passport-twitter ----->
     // http://passportjs.org/guide/twitter/
@@ -109,7 +127,6 @@ configRoutes = function(app, server, passport) {
             successRedirect: '/',
             failureRedirect: '/'
         }));
-    // <-----
 }
 
 module.exports = { configRoutes: configRoutes };

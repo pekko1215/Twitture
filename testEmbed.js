@@ -1,7 +1,6 @@
 const ejs = require('ejs');
 const fs = require('fs');
 const webshot = require('webshot')
-
 var tweets = [{
 	name:"ヒデホヒ",
 	id:"eakonnsamui",
@@ -23,5 +22,6 @@ webshot('./render/liner/out.html','google.png',{
 },(err)=>{
 	console.log(err)
 })
+console.log(tweets)
 
 fs.writeFileSync('./render/liner/out.html',ejs.render(fs.readFileSync('./render/liner/index.ejs','utf8'),{tweets:tweets}),'utf8');
