@@ -122,7 +122,7 @@ configRoutes = function(app, server, passport) {
     });
 
     app.post('/utils/tweet', function(req, res) {
-        console.log(req.body.img.length)
+        console.log(Object.keys(req.body))
         if (passport.session && passport.session.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
