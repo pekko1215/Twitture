@@ -42,7 +42,7 @@ $(() => {
 			url:'utils/tweet',
 			data:form,
 			processData: false,
-		    contentType: false,
+		    contentType: 'multipart/form-data',
 			success:function(res){
 				console.log(res)
 			}
