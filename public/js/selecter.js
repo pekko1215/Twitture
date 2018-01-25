@@ -32,15 +32,17 @@ $(() => {
     })
 
     $('#to_tweet_button').on('click',()=>{
-		var base64 = ImageToBase64($('#image-disp')[0],'image/png').replace(/^.*,/, '');
 		var text = $('textarea').val()
 		var form = new FormData();
 		form.append('text',text);
 		form.append('img',buf);
+		console.log(form)
 		$.ajax({
 			type:"POST",
 			url:'utils/tweet',
 			data:form,
+			processData: false,
+		    contentType: false,
 			success:function(res){
 				console.log(res)
 			}
