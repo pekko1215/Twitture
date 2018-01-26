@@ -3,7 +3,7 @@ $(() => {
     var $old = $('.current-content').eq(0)
     var $new = $('.current-content').eq(1)
     var $url = $('#url');
-    var buf;
+    window.buf;
     $('#request_url').click((e)=>{
 		$('#tweets').children().remove();
 		var num = $url.val().match(/\d+$/)[0];
@@ -41,7 +41,7 @@ $(() => {
 			url:'utils/tweet',
 			data:form,
 			processData: false,
-		    contentType: 'application/x-www-form-urlencoded',
+		    	contentType: false,
 			success:function(res){
 				console.log(res)
 			}

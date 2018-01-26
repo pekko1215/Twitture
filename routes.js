@@ -124,9 +124,6 @@ configRoutes = function(app, server, passport) {
     });
 
     app.post('/utils/tweet',upload.single('img'), function(req, res) {
-        console.log(req.file);
-        res.send('nyan');
-        return;
         if (passport.session && passport.session.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
@@ -134,12 +131,20 @@ configRoutes = function(app, server, passport) {
                 access_token_key: passport.session.token,
                 access_token_secret: passport.session.tokenSecret
             })
-            client.get('media/upload', {media_data:req.body.img.toString()})
+	    var file = fs.readFileSync(req.file.path);
+	    client.post('media/upload', {media:file})
                 .then(data => {
-                    res.json(statuses);
-                })
+                    return client.post('statuses/update',{status:req.body.text,media_ids:data.media_id_string})
+		})
+		.then(()=>{
+		    fs.unlinkSync(req.file.path);
+		    res.json({error:false})
+		})
                 .catch(err=>{
-
+		    res.json({
+			error:true,
+			body:err
+		    })
                 })
         } else {
             next();
