@@ -32,10 +32,14 @@ $(() => {
     })
 
     $('#to_tweet_button').on('click',()=>{
-		var text = $('textarea').val()
+		var $textarea = $('textarea');
+		var $to_tweet_button = $('#to_tweet_button'); 
+		var text = $textarea.val();
 		var form = new FormData();
 		form.append('text',text);
 		form.append('img',buf);
+		$to_tweet_button.prop('disabled',true);
+		$textarea.attr('readonly',true);
 		$.ajax({
 			type:"POST",
 			url:'utils/tweet',
@@ -43,7 +47,10 @@ $(() => {
 			processData: false,
 		    	contentType: false,
 			success:function(res){
-				console.log(res)
+			    $textarea.val('');
+			    $textarea.attr('readonly',false);
+			    $to_tweet_button.prop('disabled',false);	
+			    
 			}
 		})
     })
