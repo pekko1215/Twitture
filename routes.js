@@ -8,7 +8,7 @@ const ejsbase = fs.readFileSync('./render/liner/index.ejs', 'utf8')
 const ccss = fs.readFileSync('./render/liner/style.css', 'utf-8')
 
 const multer = require('multer');
-const upload = multer({ dest: './tmp/' });
+const upload = multer({dest:'./tmp/'});
 
 configRoutes = function(app, server, passport) {
     app.get('/', function(req, res, next) {
@@ -124,7 +124,7 @@ configRoutes = function(app, server, passport) {
     });
 
     app.post('/utils/tweet',upload.single('img'), function(req, res) {
-        console.log((req));
+        console.log(req.file);
         res.send('nyan');
         return;
         if (passport.session && passport.session.id) {
