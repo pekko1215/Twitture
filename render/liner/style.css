@@ -107,3 +107,7 @@ tr{
     background-color:#263049;
     border:none;
 }
+
+table{
+    border-spacing: 0;
+}

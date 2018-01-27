@@ -6,9 +6,11 @@
 
 	<style>
 		<% var users = []; %>
+		<% var usernames = []; %>
 		<% tweets.forEach(user=>{ %>
 			<% if(users.indexOf(user.id) == -1){ %>
 				<% users.push(user.id) %>
+				<% usernames.push(user.name)%>
 				.<%= user.id%>::before{content:"<%= user.name%>";}
 				.<%= user.id%>::after{background-image:url("<%- user.icon%>");}
 			<% } %>
@@ -17,6 +19,29 @@
 </head>
 <body class="entry-content">
 	<table style="width:100%; max-width:400px; margin:0 auto;">
+		<tr id="upperwrap">
+			<th><% 
+			var text = usernames.join(',');
+			var charcount = function (str) {
+				len = 0;
+				str = escape(str);
+				for (i=0;i<str.length;i++,len++) {
+					if (str.charAt(i) == "%") {
+						if (str.charAt(++i) == "u") {
+							i += 3;
+							len++;
+						}
+						i++;
+					}
+				}
+				return len;
+			}
+			if(charcount(text)>15){
+				text = text.slice(0,5) +'...'+ text.slice(-3);
+			}
+			%>
+			<%= text %>(<%= users.length %>)</th>
+		</tr>
 		<td style="background:#88a4d4">
 			<% tweets.forEach(comment=>{
 				if(comment.isOwner){
