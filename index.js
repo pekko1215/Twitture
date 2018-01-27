@@ -15,9 +15,9 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({uploadDir:'./tmp',limit:'100mb',extended: true }));
 app.use(bodyParser.json());
+app.use(session({secret:require('./config').session.secret}));
 app.use(passport.initialize());
 app.use(passport.session())
-app.use(session({secret:require('./config').session.secret}));
 
 routes.configRoutes(app,server,passport);
 app.use(express.static(__dirname + '/public'));

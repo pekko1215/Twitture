@@ -8,7 +8,6 @@ const passport = require('passport')
 // http://passportjs.org/guide/configure/
 passport.serializeUser(function(user, done) {
     done(null, user);
-    console.log(user)
 });
 passport.deserializeUser(function(obj, done) {
     done(null, obj);
@@ -27,7 +26,7 @@ passport.use(new TwitterStrategy({
     profile.twitter_token_secret = tokenSecret;
 
     process.nextTick(function () {
-        return done(null, profile);
+        return done(null,profile);
     });
   }
 ));

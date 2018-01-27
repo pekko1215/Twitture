@@ -13,7 +13,7 @@ const upload = multer({dest:'./tmp/'});
 configRoutes = function(app, server, passport) {
     app.get('/', function(req, res, next) {
         // 認証保護
-        cons ole.log(req.session.passport)
+        console.log(req.user)
         if (req.session.passport && req.session.passport.id) {
             res.render('app', {
                 username: req.session.passport.username,
