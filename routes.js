@@ -14,12 +14,13 @@ const upload = multer({ dest: './tmp/' });
 function sessionCheck(req, res, next) {
     if (req.user && req.user.id) {
         next();
+        return
     }
     res.redirect('/')
 }
 configRoutes = function(app, server, passport) {
 
-    app.use('/utils', sessionCheck);
+    app.use('/utils/*', sessionCheck);
 
     app.get('/', function(req, res, next) {
         // 認証保護
@@ -67,6 +68,7 @@ configRoutes = function(app, server, passport) {
                 prom = client.get('statuses/show/' + data.in_reply_to_status_id_str, {});
                 prom.then(callback)
             } else {
+                console.log(ret)
                 res.json(ret.reverse());
             }
         }
