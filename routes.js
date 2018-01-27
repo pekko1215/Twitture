@@ -12,7 +12,7 @@ const upload = multer({dest:'./tmp/'});
 
 configRoutes = function(app, server, passport) {
     app.get('/', function(req, res, next) {
-        // 認証保護
+	// 認証保護
         if (req.user && req.user.id) {
             res.render('app', {
                 username: req.user.username,
@@ -49,7 +49,8 @@ configRoutes = function(app, server, passport) {
         if (!req.user || !req.user.id) {
             res.redirect('/');
         }
-        var client = new Twitter({
+	var tokens;
+        var client = new Twitter(tokens = {
             consumer_key: TWITTER_KEYS.consumerKey,
             consumer_secret: TWITTER_KEYS.consumerSecret,
             access_token_key: req.user.token,
@@ -66,13 +67,14 @@ configRoutes = function(app, server, passport) {
                 res.json(ret.reverse());
             }
         }
-        prom.then(callback).catch(() => {
+        prom.then(callback).catch((err) => {
+	    console.log(err)
             res.json([])
-p
         });
     });
 
     app.post('/utils/create', function(req, res, next) {
+        console.log(req.user)
         if (req.user && req.user.id) {
             var arr = req.body.list.map(tweet => {
                 return {

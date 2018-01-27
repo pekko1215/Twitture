@@ -22,9 +22,7 @@ passport.use(new TwitterStrategy({
     profile.tokenSecret = tokenSecret;
     profile.icon = profile.photos[0].value.replace('_normal','_bigger');
     // tokenとtoken_secretをセット
-    profile.twitter_token = token;
-    profile.twitter_token_secret = tokenSecret;
-
+    profile.token = token;
     process.nextTick(function () {
         return done(null,profile);
     });
