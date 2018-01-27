@@ -100,3 +100,10 @@ tr{
     border-bottom: 0px;
     color:white;
 }
+
+
+#upperwrap{
+    height:50px;
+    background-color:#263049;
+    border:none;
+}
