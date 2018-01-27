@@ -15,10 +15,9 @@ configRoutes = function(app, server, passport) {
         // 認証保護
         cons ole.log(req.session.passport)
         if (req.session.passport && req.session.passport.id) {
-   	    passport.session.token = token;
             res.render('app', {
                 username: req.session.passport.username,
-                displayName: passport.session.displayName,
+                displayName: req.session.passport.displayName,
             });
         } else {
             next();
@@ -26,14 +25,14 @@ configRoutes = function(app, server, passport) {
     });
     app.get('/utils/list', function(req, res, next) {
         // 認証保護
-        if (req.session && req.session.id) {
+        if (req.session.passport && req.session.passport.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
                 consumer_secret: TWITTER_KEYS.consumerSecret,
-                access_token_key: req.session.token,
-                access_token_secret: req.session.tokenSecret
+                access_token_key: req.session.passport.token,
+                access_token_secret: req.session.passport.tokenSecret
             })
-            client.get('search/tweets', { q: `from:${req.session.username} AND min_replies:1` })
+            client.get('search/tweets', { q: `from:${req.session.passport.username} AND min_replies:1` })
                 .then(data => {
                     var { statuses } = data;
                     res.json(statuses);
@@ -48,14 +47,14 @@ configRoutes = function(app, server, passport) {
 
         var id = req.query.id;
 
-        if (!req.session || !req.session.id) {
+        if (!req.session.passport || !req.session.passport.id) {
             res.redirect('/');
         }
         var client = new Twitter({
             consumer_key: TWITTER_KEYS.consumerKey,
             consumer_secret: TWITTER_KEYS.consumerSecret,
-            access_token_key: req.session.token,
-            access_token_secret: req.session.tokenSecret
+            access_token_key: req.session.passport.token,
+            access_token_secret: req.session.passport.tokenSecret
         })
         var prom = client.get('statuses/show/' + id, {})
         var ret = [];
@@ -75,14 +74,14 @@ p
     });
 
     app.post('/utils/create', function(req, res, next) {
-        if (req.session && req.session.id) {
+        if (req.session.passport && req.session.passport.id) {
             var arr = req.body.list.map(tweet => {
                 return {
                     id: tweet.user.screen_name,
                     name: tweet.user.name,
                     icon: tweet.user.profile_image_url,
                     text: tweet.text.replace(/@.+? /g, ''),
-                    isOwner: tweet.user.id_str == req.session.id,
+                    isOwner: tweet.user.id_str == req.session.passport.id,
                     images: tweet.extended_entities && tweet.extended_entities.media ? tweet.extended_entities.media.map(d => d.media_url) : []
                 }
             })
@@ -109,12 +108,12 @@ p
     })
     app.get('/utils/list', function(req, res, next) {
         // 認証保護
-        if (req.session && req.session.id) {
+        if (req.session.passport && req.session.passport.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
                 consumer_secret: TWITTER_KEYS.consumerSecret,
-                access_token_key: req.session.token,
-                access_token_secret: req.session.tokenSecret
+                access_token_key: req.session.passport.token,
+                access_token_secret: req.session.passport.tokenSecret
             })
             client.get('search/tweets', { q: `from:${passport.session.username} AND min_replies:1 OR to:${passport.session.username}` })
                 .then(data => {
@@ -128,12 +127,12 @@ p
 
     app.post('/utils/tweet',upload.single('img'), function(req, res) {
 	
-        if (req.session && req.session.id) {
+        if (req.session.passport && req.session.passport.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
                 consumer_secret: TWITTER_KEYS.consumerSecret,
-                access_token_key: req.session.token,
-                access_token_secret: req.session.tokenSecret
+                access_token_key: req.session.passport.token,
+                access_token_secret: req.session.passport.tokenSecret
             })
 	    var file = fs.readFileSync(req.file.path);
 	    client.post('media/upload', {media:file})

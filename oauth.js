@@ -7,7 +7,8 @@ const passport = require('passport')
 // Sessionの設定
 // http://passportjs.org/guide/configure/
 passport.serializeUser(function(user, done) {
-    done(null, user.id);
+    done(null, user);
+    console.log(user)
 });
 passport.deserializeUser(function(obj, done) {
     done(null, obj);
