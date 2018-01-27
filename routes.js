@@ -13,9 +13,11 @@ const upload = multer({dest:'./tmp/'});
 configRoutes = function(app, server, passport) {
     app.get('/', function(req, res, next) {
         // 認証保護
-        if (passport.session && passport.session.id) {
+        cons ole.log(req.session.passport)
+        if (req.session.passport && req.session.passport.id) {
+   	    passport.session.token = token;
             res.render('app', {
-                username: passport.session.username,
+                username: req.session.passport.username,
                 displayName: passport.session.displayName,
             });
         } else {
@@ -24,14 +26,14 @@ configRoutes = function(app, server, passport) {
     });
     app.get('/utils/list', function(req, res, next) {
         // 認証保護
-        if (passport.session && passport.session.id) {
+        if (req.session && req.session.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
                 consumer_secret: TWITTER_KEYS.consumerSecret,
-                access_token_key: passport.session.token,
-                access_token_secret: passport.session.tokenSecret
+                access_token_key: req.session.token,
+                access_token_secret: req.session.tokenSecret
             })
-            client.get('search/tweets', { q: `from:${passport.session.username} AND min_replies:1` })
+            client.get('search/tweets', { q: `from:${req.session.username} AND min_replies:1` })
                 .then(data => {
                     var { statuses } = data;
                     res.json(statuses);
@@ -46,14 +48,14 @@ configRoutes = function(app, server, passport) {
 
         var id = req.query.id;
 
-        if (!passport.session || !passport.session.id) {
+        if (!req.session || !req.session.id) {
             res.redirect('/');
         }
         var client = new Twitter({
             consumer_key: TWITTER_KEYS.consumerKey,
             consumer_secret: TWITTER_KEYS.consumerSecret,
-            access_token_key: passport.session.token,
-            access_token_secret: passport.session.tokenSecret
+            access_token_key: req.session.token,
+            access_token_secret: req.session.tokenSecret
         })
         var prom = client.get('statuses/show/' + id, {})
         var ret = [];
@@ -68,18 +70,19 @@ configRoutes = function(app, server, passport) {
         }
         prom.then(callback).catch(() => {
             res.json([])
+p
         });
     });
 
     app.post('/utils/create', function(req, res, next) {
-        if (passport.session && passport.session.id) {
+        if (req.session && req.session.id) {
             var arr = req.body.list.map(tweet => {
                 return {
                     id: tweet.user.screen_name,
                     name: tweet.user.name,
                     icon: tweet.user.profile_image_url,
                     text: tweet.text.replace(/@.+? /g, ''),
-                    isOwner: tweet.user.id_str == passport.session.id,
+                    isOwner: tweet.user.id_str == req.session.id,
                     images: tweet.extended_entities && tweet.extended_entities.media ? tweet.extended_entities.media.map(d => d.media_url) : []
                 }
             })
@@ -106,12 +109,12 @@ configRoutes = function(app, server, passport) {
     })
     app.get('/utils/list', function(req, res, next) {
         // 認証保護
-        if (passport.session && passport.session.id) {
+        if (req.session && req.session.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
                 consumer_secret: TWITTER_KEYS.consumerSecret,
-                access_token_key: passport.session.token,
-                access_token_secret: passport.session.tokenSecret
+                access_token_key: req.session.token,
+                access_token_secret: req.session.tokenSecret
             })
             client.get('search/tweets', { q: `from:${passport.session.username} AND min_replies:1 OR to:${passport.session.username}` })
                 .then(data => {
@@ -124,12 +127,13 @@ configRoutes = function(app, server, passport) {
     });
 
     app.post('/utils/tweet',upload.single('img'), function(req, res) {
-        if (passport.session && passport.session.id) {
+	
+        if (req.session && req.session.id) {
             var client = new Twitter({
                 consumer_key: TWITTER_KEYS.consumerKey,
                 consumer_secret: TWITTER_KEYS.consumerSecret,
-                access_token_key: passport.session.token,
-                access_token_secret: passport.session.tokenSecret
+                access_token_key: req.session.token,
+                access_token_secret: req.session.tokenSecret
             })
 	    var file = fs.readFileSync(req.file.path);
 	    client.post('media/upload', {media:file})

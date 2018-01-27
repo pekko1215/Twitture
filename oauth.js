@@ -19,12 +19,8 @@ passport.use(new TwitterStrategy({
     callbackURL: TWITTER_KEYS.callbackURL
   },
   function(token, tokenSecret, profile, done) {
-    passport.session.id = profile.id;
-    passport.session.token = token;
-    passport.session.tokenSecret = tokenSecret;
-    passport.session.username = profile.username;
-    passport.session.displayName = profile.displayName;
-    passport.session.icon = profile.photos[0].value.replace('_normal','_bigger');
+    profile.tokenSecret = tokenSecret;
+    profile.icon = profile.photos[0].value.replace('_normal','_bigger');
     // tokenとtoken_secretをセット
     profile.twitter_token = token;
     profile.twitter_token_secret = tokenSecret;
