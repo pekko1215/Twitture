@@ -36,8 +36,8 @@
 				}
 				return len;
 			}
-			if(charcount(text)>15){
-				text = text.slice(0,5) +'...'+ text.slice(-3);
+			if(charcount(text)>25){
+				text = text.slice(0,8) +'...'+ text.slice(-6);
 			}
 			%>
 			<%= text %>(<%= users.length %>)</th>
