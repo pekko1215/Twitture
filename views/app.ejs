@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ツイっちゃー</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+</head>
+<body>
+	<nav class="navbar navbar-expand-md navbar-light bg-light mb-4">
+		<a href="#" class="navbar-brand mx-auto">ツイっちゃー</a>
+	</nav>
+	<div class="container">
+		<div class="row paste-wrap">
+			<div class="col-md-12">
+				<div class="input-group">
+					<input class="form-control" id="url" placeholder="ツイートのURLを入力してください。">
+					<span class="input-group-btn">
+						<button class="btn btn-success" id="request_url">
+							<span class="glyphicon glyphicon-object-align-horizontal" aria-hidden="true">
+							</span>
+						</button>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div id="content_button" class="row" style="display: none;">
+			<div class="col-md-12">
+				<div>
+					<div class="row">
+						<div class="col-md-4 col-md-offset-4">
+						<textarea class="form-control" rows="4"></textarea>
+						<button  class="btn btn-warning" id="to_tweet_button">ツイート！</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="image-displer">
+				<img id="image-disp">
+			</div>
+		</div>
+		<div id="tweets" class="row">
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+	<script src="js/selecter.js"></script>
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+</html>
