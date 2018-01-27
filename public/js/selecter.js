@@ -4,55 +4,60 @@ $(() => {
     var $new = $('.current-content').eq(1)
     var $url = $('#url');
     window.buf;
-    $('#request_url').click((e)=>{
-		$('#tweets').children().remove();
-		var num = $url.val().match(/\d+$/)[0];
-		if(isNaN(num)){return}
-		$.get('/utils/replies?id='+num,data=>{
-			updateTweets(data)
-			var xhr = new XMLHttpRequest;
-			xhr.onreadystatechange = function(){
-				if(this.readyState==4&&this.status==200){
-					$('#content_button').show()
-					$('#image-disp')[0].src = URL.createObjectURL(this.response)
-					$('#request_load').remove();
-					buf = this.response;
-				}
-			}
-			xhr.open('POST','/utils/create');
-			xhr.responseType = 'blob';
-			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.send(JSON.stringify({list:data}))
-		});
-		$(document.body).after($('<div class="loader" id="request_load"></div>'));
+    $('#request_url').click((e) => {
+        $('#tweets').children().remove();
+        var num = $url.val().match(/\d+$/)[0];
+        if (isNaN(num)) { return }
+        $.get('/utils/replies?id=' + num, data => {
+            updateTweets(data)
+            var xhr = new XMLHttpRequest;
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    $('#content_button').show()
+                    var bytes = new Uint8Array(this.response);
+                    var binary = '';
+                    for(var i=0,len = bytes.byteLength;i<len;i++){
+						binary += String.fromCharCode(bytes[i]);
+                    }
+                    $('#image-disp')[0].src = "data:image/jpeg;base64," + window.btoa(binary);
+                    $('#request_load').remove();
+                    buf = new Blob([ this.response ], { type: "image/jpeg" });;
+                }
+            }
+            xhr.open('POST', '/utils/create');
+            xhr.responseType = 'arraybuffer';
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify({ list: data }))
+        });
+        $(document.body).after($('<div class="loader" id="request_load"></div>'));
     })
 
-    $('#url').on('keydown',(e)=>{
-		e.key ==  'Enter' && $('#request_url').click();
+    $('#url').on('keydown', (e) => {
+        e.key == 'Enter' && $('#request_url').click();
     })
 
-    $('#to_tweet_button').on('click',()=>{
-		var $textarea = $('textarea');
-		var $to_tweet_button = $('#to_tweet_button'); 
-		var text = $textarea.val();
-		var form = new FormData();
-		form.append('text',text);
-		form.append('img',buf);
-		$to_tweet_button.prop('disabled',true);
-		$textarea.attr('readonly',true);
-		$.ajax({
-			type:"POST",
-			url:'utils/tweet',
-			data:form,
-			processData: false,
-		    	contentType: false,
-			success:function(res){
-			    $textarea.val('');
-			    $textarea.attr('readonly',false);
-			    $to_tweet_button.prop('disabled',false);	
-			    
-			}
-		})
+    $('#to_tweet_button').on('click', () => {
+        var $textarea = $('textarea');
+        var $to_tweet_button = $('#to_tweet_button');
+        var text = $textarea.val();
+        var form = new FormData();
+        form.append('text', text);
+        form.append('img', buf);
+        $to_tweet_button.prop('disabled', true);
+        $textarea.attr('readonly', true);
+        $.ajax({
+            type: "POST",
+            url: 'utils/tweet',
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function(res) {
+                $textarea.val('');
+                $textarea.attr('readonly', false);
+                $to_tweet_button.prop('disabled', false);
+
+            }
+        })
     })
 })
 
@@ -72,13 +77,13 @@ function updateTweets(data) {
     $('#tweets').children().remove();
     data.forEach(tweet => {
         var $card = $(tweetDOMParser(tweet));
-		$('#tweets').append($card)
+        $('#tweets').append($card)
     })
 }
 
 function tweetDOMParser(tweet) {
-	var users = tweet.text.match(/@.+?\s/g)||[];
-	users = users && users.map(t=>t.slice(1,-1))
+    var users = tweet.text.match(/@.+?\s/g) || [];
+    users = users && users.map(t => t.slice(1, -1))
     return `
 	<div class="col-lg-6" style="height:130px;margin-bottom:5px;">
 		<div class="panel panel-info" style="height:100%">
@@ -98,7 +103,7 @@ function tweetDOMParser(tweet) {
 function ImageToBase64(img, mime_type) {
     // New Canvas
     var canvas = document.createElement('canvas');
-    canvas.width  = img.width;
+    canvas.width = img.width;
     canvas.height = img.height;
     // Draw Image
     var ctx = canvas.getContext('2d');

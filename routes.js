@@ -68,12 +68,10 @@ configRoutes = function(app, server, passport) {
                 prom = client.get('statuses/show/' + data.in_reply_to_status_id_str, {});
                 prom.then(callback)
             } else {
-                console.log(ret)
                 res.json(ret.reverse());
             }
         }
         prom.then(callback).catch((err) => {
-            console.log(err)
             res.json([])
         });
     });
