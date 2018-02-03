@@ -3,6 +3,7 @@ $(() => {
     var $old = $('.current-content').eq(0)
     var $new = $('.current-content').eq(1)
     var $url = $('#url');
+    $('textarea').val('\n#Twitture')
     window.buf;
     $('#request_url').click((e) => {
         $('#tweets').children().remove();
@@ -52,7 +53,7 @@ $(() => {
             processData: false,
             contentType: false,
             success: function(res) {
-                $textarea.val('');
+                $textarea.val('\n#Twitture');
                 $textarea.attr('readonly', false);
                 $to_tweet_button.prop('disabled', false);
 

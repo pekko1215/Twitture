@@ -46,14 +46,14 @@
 			<% tweets.forEach(comment=>{
 				if(comment.isOwner){
 					if(comment.text!=""){ %>
-						<p class="my-line"><span class="my-toge"><%= comment.text %><span/></p>
+						<p class="my-line"><span class="my-toge"><%- comment.text %><span/></p>
 					<% }
 					comment.images.forEach(url=>{ %>
 						<p class="my-line stamp"><img src="<%- url %>"></p>
 					<% })
 				}else{
 					if(comment.text!=""){ %>
-						<p class="other-line <%= comment.id %>"><span class="other-toge"><%= comment.text %><span/></p>
+						<p class="other-line <%= comment.id %>"><span class="other-toge"><%- comment.text %><span/></p>
 					<% }
 					comment.images.forEach(url=>{ %>
 						<p class="other-line stamp <%= comment.id %>"><img src="<%- url %>"></p>
