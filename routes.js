@@ -82,7 +82,7 @@ configRoutes = function(app, server, passport) {
                 id: tweet.user.screen_name,
                 name: tweet.user.name,
                 icon: tweet.user.profile_image_url,
-                text: tweet.text.replace(/@.+? /g, ''),
+                text: tweet.text.replace(/@.+? /g, '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'),
                 isOwner: tweet.user.id_str == req.user.id,
                 images: tweet.extended_entities && tweet.extended_entities.media ? tweet.extended_entities.media.map(d => d.media_url) : []
             }
